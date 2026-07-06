@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Item Display</title>
+    <script src="item-list.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 24px;
+      }
+
+      .main-container {
+        width: 100%;
+        max-width: 480px;
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        padding: 32px;
+      }
+
+      h2 {
+        font-size: 1.75rem;
+        color: #1f2337;
+        margin-bottom: 20px;
+      }
+
+      .select {
+        width: 100%;
+        padding: 12px 14px;
+        font-size: 1rem;
+        color: #1f2337;
+        background: #f7f8fc;
+        border: 2px solid #d9dcea;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+
+      .select:hover {
+        border-color: #a7aed0;
+      }
+
+      .select:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.25);
+      }
+
+      hr {
+        border: none;
+        border-top: 1px solid #e6e8f2;
+        margin: 24px 0 8px;
+      }
+
+      .prop-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 14px 4px;
+        border-bottom: 1px solid #f0f1f7;
+      }
+
+      .prop-row:last-child {
+        border-bottom: none;
+      }
+
+      .prop-name {
+        font-weight: 600;
+        color: #6b7089;
+        font-size: 0.95rem;
+      }
+
+      .prop-value {
+        color: #1f2337;
+        font-size: 1rem;
+        font-weight: 500;
+        min-height: 1.2em;
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main-container">
+      <div>
+        <h2>Item Display</h2>
+      </div>
+      <div>
+        <select name="item-list" id="item-list" class="select"></select>
+      </div>
+      <hr />
+      <div class="prop-row">
+        <div class="prop-name">ID</div>
+        <div id="item-id" class="prop-value"></div>
+      </div>
+      <div class="prop-row">
+        <div class="prop-name">Name</div>
+        <div id="item-name" class="prop-value"></div>
+      </div>
+      <div class="prop-row">
+        <div class="prop-name">Category</div>
+        <div id="item-category" class="prop-value"></div>
+      </div>
+      <div class="prop-row">
+        <div class="prop-name">Inventory Amt.</div>
+        <div id="item-inventory" class="prop-value"></div>
+      </div>
+      <div class="prop-row">
+        <div class="prop-name">List price</div>
+        <div id="item-price" class="prop-value"></div>
+      </div>
+    </div>
+
+    <script>
+      const selectEl = document.getElementById("item-list");
+
+      const fields = {
+        id: document.getElementById("item-id"),
+        name: document.getElementById("item-name"),
+        category: document.getElementById("item-category"),
+        inventory: document.getElementById("item-inventory"),
+        price: document.getElementById("item-price"),
+      };
+
+      // Empty option first so nothing is selected by default
+      const emptyOption = document.createElement("option");
+      emptyOption.value = "";
+      emptyOption.textContent = "";
+      selectEl.appendChild(emptyOption);
+
+      items.forEach((item) => {
+        const option = document.createElement("option");
+        option.value = item.id;
+        option.textContent = item.name;
+        selectEl.appendChild(option);
+      });
+
+      function clearDetails() {
+        Object.values(fields).forEach((el) => (el.textContent = ""));
+      }
+
+      function showDetails(item) {
+        fields.id.textContent = item.id;
+        fields.name.textContent = item.name;
+        fields.category.textContent = item.category;
+        fields.inventory.textContent = item.inventory;
+        fields.price.textContent = item.price;
+      }
+
+      selectEl.addEventListener("change", () => {
+        const selectedId = Number(selectEl.value);
+        const item = items.find((i) => i.id === selectedId);
+        if (item) {
+          showDetails(item);
+        } else {
+          clearDetails();
+        }
+      });
+    </script>
+  </body>
+</html>
